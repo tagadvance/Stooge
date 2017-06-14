@@ -95,8 +95,11 @@ class CurlRequest {
 	 * @return self
 	 * @throws CurlException
 	 */
-	function autoCookieJar() {
-		$cookiePath = File::createTempFile ( 'COOKIE' )->getRealPath ();
+	function autoCookieJar($cookiePath = null) {
+		if ($cookiePath === null) {
+			$cookiePath = File::createTempFile ( 'COOKIE' )->getRealPath ();
+		}
+		
 		$this->setOptions ( [ 
 				CURLOPT_COOKIEJAR => $cookiePath,
 				CURLOPT_COOKIEFILE => $cookiePath 
