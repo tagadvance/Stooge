@@ -6,7 +6,7 @@ class URLQuery {
 	
 	private $parameters;
 	
-	static function createFromQueryString(string $query, $prefix = '?', $keyValuePairSeparator = '=', $delimiter = '&') {
+	static function createFromQueryString(string $query, $prefix = '?', $keyValuePairSeparator = '=', $delimiter= '&'): self {
 		$parameters = [ ];
 		
 		if (strpos ( $query, $prefix ) === 0) {
@@ -48,7 +48,7 @@ class URLQuery {
 		return $this->toString();
 	}
 	
-	function toString($prefix = '?', $keyValuePairSeparator = '=', $delimiter = '&') {
+	function toString($prefix = '?', $keyValuePairSeparator = '=', $delimiter = '&'): string {
 		$string = $prefix;
 		foreach ( $map as $key => $value ) {
 			if (strlen ( $string ) > strlen ( $prefix )) {
