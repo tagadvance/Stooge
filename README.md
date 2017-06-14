@@ -1,6 +1,19 @@
 # Stooge
 A PHP library for simplifying the process of making HTTP requests via cURL.
 
+## Download / Install
+The easiest way to install Stooge is via Composer:
+```bash
+composer require "tagadvance/trapdoor:dev-master"
+```
+```json
+{
+    "require": {
+        "tagadvance/stooge": "dev-master"
+    }
+}
+```
+
 ## Example
 ```php
 <?php
