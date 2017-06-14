@@ -49,3 +49,6 @@ print $response . $break;
 $response = $request->setUrl ( $url )->put ( $fields = [ ] );
 print $response;
 ```
+
+## What's with the name?
+[cURL](https://curl.haxx.se/) -> [Curly Howard](https://en.wikipedia.org/wiki/Curly_Howard) -> [The Three Stooges](https://en.wikipedia.org/wiki/The_Three_Stooges) -> [Stooge](https://github.com/tagadvance/Stooge)
