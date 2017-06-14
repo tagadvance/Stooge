@@ -9,7 +9,7 @@ class MKJHeaderParserTest extends TestCase {
 	function testParseHeaders() {
 		$parser = new MKJHeaderParser ();
 		
-		$filename = __DIR__ . '/../../resources/intentionallyblankpage';
+		$filename = __DIR__ . '/../../resources/intentionallyblankpage.com';
 		$contents = file_get_contents ( $filename );
 		
 		$headers = $parser->parseHeaders ( $contents );
