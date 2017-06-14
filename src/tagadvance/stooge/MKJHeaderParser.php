@@ -7,7 +7,7 @@ namespace tagadvance\stooge;
  * 
  * @see https://stackoverflow.com/a/18682872/625688
  */
-class MKJHeaderParser {
+class MKJHeaderParser implements HeaderParser {
 	
 	const NEWLINE = "\r\n";
 	
