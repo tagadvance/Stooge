@@ -1,6 +1,11 @@
 # Stooge
 A PHP library for simplifying the process of making HTTP requests via cURL.
 
+Stooge performs HTTP requests by using `CurlRequest` as a fluent builder for PHP's [Client URL Library](http://php.net/manual/en/book.curl.php).
+* `__invoke()` has been overridden to call `execute()`
+* there are convenience methods for `get`, `post`, and `put` operations
+* `autoCookieJar()` is useful if sessions are necessary
+
 ## Download / Install
 The easiest way to install Stooge is via Composer:
 ```bash
@@ -47,7 +52,7 @@ $response = $request->setUrl ( $url )->post ( $fields = [ ] );
 print $response . $break;
 
 $response = $request->setUrl ( $url )->put ( $fields = [ ] );
-print $response;
+print $response . PHP_EOL;
 ```
 
 ## What's with the name?
