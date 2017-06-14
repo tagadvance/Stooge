@@ -9,23 +9,34 @@ namespace tagadvance\stooge;
  */
 class MKJHeaderParser {
 	
+	const NEWLINE = "\r\n";
+	
 	function parseHeaders(string $content): array {
-		$headers = array ();
+		$headers = [ ];
 		
-		// Split the string on every "double" new line.
-		$arrRequests = explode ( "\r\n\r\n", $content);
+		$doubleNewline = self::NEWLINE . self::NEWLINE;
+		$requests = explode ( $doubleNewline, $content );
 		
-		// Loop of response headers. The "count() -1" is to
-		// avoid an empty row for the extra line break before the body of the response.
-		for($index = 0; $index < count ( $arrRequests ) - 1; $index ++) {
-			
-			foreach ( explode ( "\r\n", $arrRequests [$index] ) as $i => $line ) {
-				if ($i === 0)
-					$headers [$index] ['http_code'] = $line;
-				else {
-					list ( $key, $value ) = explode ( ': ', $line );
-					$headers [$index] [$key] = $value;
-				}
+		foreach ( $requests as $request ) {
+			$request = trim ( $request );
+			if (! empty ( $request )) {
+				$headers [] = $this->parseRequestHeaders ( $request );
+			}
+		}
+		
+		return $headers;
+	}
+	
+	private function parseRequestHeaders($request) {
+		$headers = [ ];
+		
+		$lines = explode ( self::NEWLINE, $request );
+		foreach ( $lines as $i => $line ) {
+			if ($i === 0) {
+				$headers [] = $line;
+			} else {
+				list ( $key, $value ) = explode ( ': ', $line );
+				$headers [$key] = $value;
 			}
 		}
 		
