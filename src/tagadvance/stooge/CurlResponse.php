@@ -2,6 +2,11 @@
 
 namespace tagadvance\stooge;
 
+/**
+ * 
+ * @author Tag
+ * @see https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message
+ */
 class CurlResponse {
 	
 	private $statusCode;
@@ -36,17 +41,16 @@ class CurlResponse {
 	function __toString() {
 		$headerData = '';
 		foreach ( $this->headers as $headers ) {
-			$headerData .= PHP_EOL;
 			foreach ( $headers as $name => $value ) {
 				// i.e. $headerData does not end with PHP_EOL
-				if (strpos ( $headerData, PHP_EOL, - strlen ( PHP_EOL ) ) === false) {
+				if (! empty ( $headerData ) && strpos ( $headerData, PHP_EOL, - strlen ( PHP_EOL ) ) === false) {
 					$headerData .= PHP_EOL;
 				}
 				
 				if (is_numeric ( $name )) {
-					$headerData .= "|\t$value";
+					$headerData .= "| $value";
 				} else {
-					$headerData .= "|\t$name: $value";
+					$headerData .= "| $name: $value";
 				}
 			}
 		}
@@ -54,15 +58,18 @@ class CurlResponse {
 		$body = '';
 		$lines = explode ( $delimiter = PHP_EOL, $this->body );
 		foreach ( $lines as $line ) {
-			$body .= PHP_EOL . "|$line";
+			if (! empty ( $body )) {
+				$body .= PHP_EOL;
+			}
+			$body .= "| $line";
 		}
 		
 		return <<<RESPONSE
-┌──────────────────────────────
-| HTTP Status Code: $this->statusCode
-| Headers: $headerData
-| Body: $body
-└──────────────────────────────
+┌─────────────────────────
+$headerData
+|
+$body
+└─────────────────────────
 RESPONSE;
 	}
 		
