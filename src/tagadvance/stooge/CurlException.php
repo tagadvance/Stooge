@@ -4,7 +4,7 @@ namespace tagadvance\stooge;
 
 /**
  *
- * @author Tag <tagadvance@gmail.com>
+ * @author Tag <tagadvance+stooge@gmail.com>
  *        
  */
 class CurlException extends \Exception {

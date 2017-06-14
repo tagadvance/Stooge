@@ -4,7 +4,7 @@ namespace tagadvance\stooge;
 
 /**
  * 
- * @author Tag
+ * @author Tag <tagadvance+stooge@gmail.com>
  * @see https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message
  */
 class CurlResponse {
