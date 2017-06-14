@@ -7,7 +7,7 @@ namespace tagadvance\stooge;
  * @author Tag <tagadvance+stooge@gmail.com>
  *        
  */
-interface File {
+class File {
 	
 	/**
 	 * Hidden constructor
@@ -26,7 +26,7 @@ interface File {
 			throw new CurlException ( $message );
 		}
 		
-		$deleteOnExit = function () {
+		$deleteOnExit = function () use ($temp) {
 			unlink ( $temp );
 		};
 		register_shutdown_function ( $deleteOnExit );
