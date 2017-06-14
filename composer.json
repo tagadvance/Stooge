@@ -1,0 +1,20 @@
+{
+	"name" : "tagadvance/stooge",
+	"description" : "...",
+	"type" : "project",
+	"keywords": ["PDO"],
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Tag",
+			"email" : "tagadvance@gmail.com"
+		}
+	],
+	"require" : {
+		"phpunit/phpunit" : "^6.1"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"" : "src/"
+		}
+	}
+}
