@@ -7,7 +7,7 @@ namespace tagadvance\stooge;
  * 
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
  */
-class MimeType {
+final class MimeType {
 	
 	const DEFAULT = 'application/octet-stream';
 	
