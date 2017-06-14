@@ -2,7 +2,7 @@
 	"name" : "tagadvance/stooge",
 	"description" : "...",
 	"type" : "project",
-	"keywords": ["PDO"],
+	"keywords": ["HTTP", "HTTPS", "cURL", "client", "request", "URL", "query", "cookie", "session"],
 	"license" : "MIT",
 	"authors" : [{
 			"name" : "Tag",
