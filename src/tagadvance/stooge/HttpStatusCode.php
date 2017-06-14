@@ -464,7 +464,7 @@ final class HttpStatusCode {
 	 * @throws InvalidArgumentException
 	 * @return string
 	 */
-	static function valueOf($code) {
+	static function valueOf($code): string {
 		$classes = [ 
 				__CLASS__,
 				WebDAV::class 
