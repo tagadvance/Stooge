@@ -50,7 +50,7 @@ class URLQuery {
 	
 	function toString($prefix = '?', $keyValuePairSeparator = '=', $delimiter = '&'): string {
 		$string = $prefix;
-		foreach ( $map as $key => $value ) {
+		foreach ( $this->parameters as $key => $value ) {
 			if (strlen ( $string ) > strlen ( $prefix )) {
 				$sb .= $delimiter;
 			}

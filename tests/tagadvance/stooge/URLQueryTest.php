@@ -46,4 +46,16 @@ class URLQueryTest extends TestCase {
 		$this->assertEquals($expected, $actual = $urlQuery->foo);
 	}
 	
+	function testToString() {
+		$expected = '?foo=bar';
+		
+		$parameters = [ 
+				'foo' => 'bar' 
+		];
+		$urlQuery = new URLQuery ( $parameters );
+		$string = $urlQuery->toString ();
+		
+		$this->assertEquals ( $expected, $string );
+	}
+	
 }
