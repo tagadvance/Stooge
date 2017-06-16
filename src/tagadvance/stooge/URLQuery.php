@@ -52,7 +52,7 @@ class URLQuery {
 		$string = $prefix;
 		foreach ( $this->parameters as $key => $value ) {
 			if (strlen ( $string ) > strlen ( $prefix )) {
-				$sb .= $delimiter;
+				$string .= $delimiter;
 			}
 			$encodedKey = urlencode ( $key );
 			$encodedValue = urlencode ( $value );

@@ -47,10 +47,11 @@ class URLQueryTest extends TestCase {
 	}
 	
 	function testToString() {
-		$expected = '?foo=bar';
+		$expected = '?foo=test&bar=test';
 		
 		$parameters = [ 
-				'foo' => 'bar' 
+				'foo' => 'test',
+				'bar' => 'test'
 		];
 		$urlQuery = new URLQuery ( $parameters );
 		$string = $urlQuery->toString ();
