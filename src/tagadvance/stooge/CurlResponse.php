@@ -34,7 +34,7 @@ class CurlResponse {
 	function getBodyAsJson(): \stdClass {
 		$contentType = $this->headers ['content-type'] ?? '';
 		if ($contentType != MimeType::JSON) {
-			$message = "unexpected content-type '$contentType'";
+			$message = "unexpected Content-Type: $contentType";
 			trigger_error ( $message, E_USER_WARNING );
 		}
 		return json_decode ( $this->body );
