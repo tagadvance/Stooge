@@ -263,8 +263,8 @@ class CurlRequest {
 	 * @param mixed $fields        	
 	 * @return self
 	 */
-	function post($fields): CurlResponse {
-		return $this->setOptions ( [ 
+	function post($url, $fields): CurlResponse {
+		return $this->setUrl ( $url )->setOptions ( [ 
 				CURLOPT_POST => true,
 				CURLOPT_POSTFIELDS => $fields 
 		] )->execute ();
@@ -275,10 +275,34 @@ class CurlRequest {
 	 * @param mixed $fields        	
 	 * @return self
 	 */
-	function put($fields): CurlResponse {
+	function put($url, $fields): CurlResponse {
 		return $this->setOptions ( [ 
 				CURLOPT_PUT => true,
 				CURLOPT_POSTFIELDS => $fields 
+		] )->execute ();
+	}
+	
+	/**
+	 *
+	 * @param mixed $fields
+	 * @return self
+	 */
+	function patch($url, $fields): CurlResponse {
+		return $this->setUrl ( $url )->setOptions ( [
+				CURLOPT_CUSTOMREQUEST => 'PATCH',
+				CURLOPT_POSTFIELDS => $fields
+		] )->execute ();
+	}
+	
+	/**
+	 *
+	 * @param mixed $fields
+	 * @return self
+	 */
+	function delete($url, $fields): CurlResponse {
+		return $this->setUrl ( $url )->setOptions ( [
+				CURLOPT_CUSTOMREQUEST => 'DELETE',
+				CURLOPT_POSTFIELDS => $fields
 		] )->execute ();
 	}
 	

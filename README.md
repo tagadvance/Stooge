@@ -36,6 +36,7 @@ $url = 'http://intentionallyblankpage.com';
 $request = new CurlRequest ();
 $request->autoDetectUserAgent ();
 $response = $request
+		->autoCookieJar()
 		->setAutoreferer ()
 		->setReturntransfer ()
 		->setConnecttimeout ( 30 )
@@ -48,10 +49,10 @@ $response = $request
 print $response . $break;
 
 $url = 'http://intentionallyblankpage.com/test.php';
-$response = $request->setUrl ( $url )->post ( $fields = [ ] );
+$response = $request->post ( $url, $fields = [ ] );
 print $response . $break;
 
-$response = $request->setUrl ( $url )->put ( $fields = [ ] );
+$response = $request->put ( $url, $fields = [ ] );
 print $response . PHP_EOL;
 ```
 
