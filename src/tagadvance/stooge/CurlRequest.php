@@ -255,7 +255,7 @@ class CurlRequest {
 	 * @return \tagadvance\stooge\CurlResponse
 	 */
 	function get(string $url): CurlResponse {
-		return $this->setUrl ( $url )->execute ();
+		return $this->setURL ( $url )->execute ();
 	}
 	
 	/**
@@ -264,7 +264,7 @@ class CurlRequest {
 	 * @return self
 	 */
 	function post($url, $fields): CurlResponse {
-		return $this->setUrl ( $url )->setOptions ( [ 
+		return $this->setURL ( $url )->setOptions ( [ 
 				CURLOPT_POST => true,
 				CURLOPT_POSTFIELDS => $fields 
 		] )->execute ();
@@ -276,7 +276,7 @@ class CurlRequest {
 	 * @return self
 	 */
 	function put($url, $fields): CurlResponse {
-		return $this->setUrl ( $url )->setOptions ( [ 
+		return $this->setURL ( $url )->setOptions ( [ 
 				CURLOPT_PUT => true,
 				CURLOPT_POSTFIELDS => $fields 
 		] )->execute ();
@@ -288,7 +288,7 @@ class CurlRequest {
 	 * @return self
 	 */
 	function patch($url, $fields): CurlResponse {
-		return $this->setUrl ( $url )->setOptions ( [
+		return $this->setURL ( $url )->setOptions ( [
 				CURLOPT_CUSTOMREQUEST => 'PATCH',
 				CURLOPT_POSTFIELDS => $fields
 		] )->execute ();
@@ -300,7 +300,7 @@ class CurlRequest {
 	 * @return self
 	 */
 	function delete($url, $fields): CurlResponse {
-		return $this->setUrl ( $url )->setOptions ( [
+		return $this->setURL ( $url )->setOptions ( [
 				CURLOPT_CUSTOMREQUEST => 'DELETE',
 				CURLOPT_POSTFIELDS => $fields
 		] )->execute ();
