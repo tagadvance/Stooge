@@ -276,7 +276,7 @@ class CurlRequest {
 	 * @return self
 	 */
 	function put($url, $fields): CurlResponse {
-		return $this->setOptions ( [ 
+		return $this->setUrl ( $url )->setOptions ( [ 
 				CURLOPT_PUT => true,
 				CURLOPT_POSTFIELDS => $fields 
 		] )->execute ();
