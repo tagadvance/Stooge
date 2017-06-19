@@ -277,7 +277,7 @@ class CurlRequest {
 	 */
 	function put($url, $fields): CurlResponse {
 		return $this->setUrl ( $url )->setOptions ( [ 
-				CURLOPT_CUSTOMREQUEST => 'PATCH',
+				CURLOPT_CUSTOMREQUEST => 'PUT',
 				CURLOPT_POSTFIELDS => $fields 
 		] )->execute ();
 	}
