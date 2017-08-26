@@ -8,8 +8,6 @@ namespace tagadvance\stooge;
  */
 class MKJHeaderParser implements HeaderParser {
 
-    const NEWLINE = "\r\n";
-
     function parseHeaders(string $content): array {
         $headers = [];
         
