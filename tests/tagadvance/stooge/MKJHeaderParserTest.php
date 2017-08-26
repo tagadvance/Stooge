@@ -21,8 +21,9 @@ class MKJHeaderParserTest extends TestCase {
         
         $filename = __DIR__ . '/../../resources/redirect-to-intentionallyblankpage.com';
         $contents = file_get_contents($filename);
-        
+        var_dump($contents);
         $headers = $parser->parseHeaders($contents);
+        var_dump($headers);
         $count = count($headers);
         $this->assertEquals($expected = 2, $count);
     }
