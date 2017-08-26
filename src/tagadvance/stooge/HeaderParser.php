@@ -8,7 +8,7 @@ namespace tagadvance\stooge;
  *        
  */
 interface HeaderParser {
-	
-	function parseHeaders(string $content): array;
-	
+
+    function parseHeaders(string $content): array;
+
 }
