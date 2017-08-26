@@ -12,5 +12,11 @@ before_script:
   # configure time zone
   - echo 'date.timezone = "America/Los_Angeles"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
+  # php-coveralls
+  - mkdir -p build/logs
+
 script:
-  - php vendor/bin/phpunit --bootstrap vendor/autoload.php tests
+  - php vendor/bin/phpunit --bootstrap vendor/autoload.php --coverage-clover build/logs/clover.xml tests
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
