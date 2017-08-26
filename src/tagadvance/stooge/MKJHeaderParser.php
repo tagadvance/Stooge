@@ -13,8 +13,8 @@ class MKJHeaderParser implements HeaderParser {
     function parseHeaders(string $content): array {
         $headers = [];
         
-        $doubleNewline = self::NEWLINE . self::NEWLINE;
-        $requests = explode($doubleNewline, $content);
+        $pattern = "/(\r\n|\n){2}/";
+        $requests = preg_split($pattern, $content);
         
         foreach ($requests as $request) {
             $request = trim($request);
@@ -29,7 +29,8 @@ class MKJHeaderParser implements HeaderParser {
     private function parseRequestHeaders($request) {
         $headers = [];
         
-        $lines = explode(self::NEWLINE, $request);
+        $pattern = "/(\r\n|\n)/";
+        $lines = preg_split($pattern, $request);
         foreach ($lines as $i => $line) {
             if ($i === 0) {
                 $headers[] = $line;
