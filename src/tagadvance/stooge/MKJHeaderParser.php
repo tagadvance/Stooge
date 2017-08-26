@@ -11,7 +11,7 @@ class MKJHeaderParser implements HeaderParser {
     function parseHeaders(string $content): array {
         $headers = [];
         
-        $pattern = "/(\r\n|\n){2}/";
+        $pattern = "/(\r?\n){2}/";
         $requests = preg_split($pattern, $content);
         
         foreach ($requests as $request) {
@@ -27,7 +27,7 @@ class MKJHeaderParser implements HeaderParser {
     private function parseRequestHeaders($request) {
         $headers = [];
         
-        $pattern = "/(\r\n|\n)/";
+        $pattern = "/(\r?\n)/";
         $lines = preg_split($pattern, $request);
         foreach ($lines as $i => $line) {
             if ($i === 0) {
