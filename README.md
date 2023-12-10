@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/tagadvance/Stooge.svg?branch=master)](https://travis-ci.org/tagadvance/Stooge)
-[![Coverage Status](https://coveralls.io/repos/github/tagadvance/Stooge/badge.svg?branch=master)](https://coveralls.io/github/tagadvance/Stooge?branch=master)
 
 # Stooge
 A PHP library for simplifying the process of making HTTP requests via cURL.
