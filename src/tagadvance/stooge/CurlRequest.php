@@ -18,11 +18,7 @@ define('USER_AGENT_CHROME', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebK
  */
 class CurlRequest
 {
-    /**
-     *
-     * @var resource
-     */
-    private $curlSession;
+    private \CurlHandle $curlSession;
 
     /**
      *
@@ -32,29 +28,35 @@ class CurlRequest
 
     /**
      *
+     * @throws CurlException
      * @see http://www.php.net/manual/en/function.curl-init.php
      */
     public function __construct()
     {
-        $this->curlSession = curl_init();
+        $curlSession = curl_init();
+        if ($curlSession === false) {
+            throw new CurlException('cURL session could not be initialized');
+        }
+        $this->curlSession = $curlSession;
     }
 
-    /**
-     *
-     * @return resource
-     */
-    public function getCurlSession()
+    public function getCurlSession(): \CurlHandle
     {
         return $this->curlSession;
     }
 
     /**
      *
+     * @throws CurlException
      * @see http://www.php.net/manual/en/function.curl-copy-handle.php
      */
     public function __clone()
     {
-        $this->curlSession = curl_copy_handle($this->curlSession);
+        $curlSession = curl_copy_handle($this->curlSession);
+        if ($curlSession === false) {
+            throw new CurlException('cURL session could not be copied');
+        }
+        $this->curlSession = $curlSession;
         // TODO: does $options need to be copied too?
     }
 
