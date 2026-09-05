@@ -529,7 +529,8 @@ final class HttpStatusCode
             }
         }
 
-        throw new \InvalidArgumentException($code);
+        $message = "unknown status code: $code";
+        throw new \InvalidArgumentException($message);
     }
 
 }

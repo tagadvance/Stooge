@@ -15,4 +15,12 @@ class HttpStatusCodeTest extends TestCase
         $this->assertEquals($expected = 'PROCESSING', $value);
     }
 
+    public function testValueOfUnknownCode()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('unknown status code: 299');
+
+        HttpStatusCode::valueOf(299);
+    }
+
 }
