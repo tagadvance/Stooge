@@ -108,4 +108,29 @@ class CurlResponseTest extends TestCase
         $this->assertStringContainsString('| Location: http://intentionallyblankpage.com', $string);
         $this->assertStringContainsString('| body', $string);
     }
+
+    public function testGetBodyAsJsonIgnoresContentTypeParameters()
+    {
+        $headers = [
+            [
+                0 => 'HTTP/1.1 200 OK',
+                'Content-Type' => 'Application/JSON; charset=utf-8',
+            ],
+        ];
+        $response = new CurlResponse(200, $headers, '{"foo":"bar"}');
+
+        $warnings = [];
+        set_error_handler(function (int $errno, string $message) use (&$warnings): bool {
+            $warnings[] = $message;
+            return true;
+        }, E_USER_WARNING);
+        try {
+            $json = $response->getBodyAsJson();
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertSame([], $warnings);
+        $this->assertSame('bar', $json->foo);
+    }
 }
