@@ -1,4 +1,5 @@
 [![CI](https://github.com/tagadvance/Stooge/actions/workflows/ci.yml/badge.svg)](https://github.com/tagadvance/Stooge/actions/workflows/ci.yml)
+[![Packagist](https://img.shields.io/packagist/v/tagadvance/stooge.svg)](https://packagist.org/packages/tagadvance/stooge)
 [![PHP](https://img.shields.io/badge/php-%3E%3D8.4-777bb4.svg)](https://www.php.net/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -13,12 +14,12 @@ Stooge performs HTTP requests by using `CurlRequest` as a fluent builder for PHP
 ## Download / Install
 The easiest way to install Stooge is via Composer:
 ```bash
-composer require "tagadvance/stooge:dev-master"
+composer require "tagadvance/stooge:^1.0"
 ```
 ```json
 {
     "require": {
-        "tagadvance/stooge": "dev-master"
+        "tagadvance/stooge": "^1.0"
     }
 }
 ```
