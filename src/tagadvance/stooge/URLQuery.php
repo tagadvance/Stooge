@@ -37,7 +37,7 @@ class URLQuery
 
     public function __set(string $name, $value)
     {
-        return $this->parameters[$name] = $value;
+        $this->parameters[$name] = $value;
     }
 
     public function __isset(string $name)
