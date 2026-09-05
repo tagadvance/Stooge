@@ -133,4 +133,20 @@ class CurlResponseTest extends TestCase
         $this->assertSame([], $warnings);
         $this->assertSame('bar', $json->foo);
     }
+
+    public function testGetBodyAsJsonRejectsANonObjectTopLevel()
+    {
+        $response = new CurlResponse(200, [['content-type' => 'application/json']], '[1,2,3]');
+
+        $this->expectException(CurlException::class);
+        $this->expectExceptionMessage('JSON body is not an object');
+        $response->getBodyAsJson();
+    }
+
+    public function testGetDecodedBodyReturnsANonObjectTopLevel()
+    {
+        $response = new CurlResponse(200, [['content-type' => 'application/json']], '[1,2,3]');
+
+        $this->assertSame([1, 2, 3], $response->getDecodedBody());
+    }
 }

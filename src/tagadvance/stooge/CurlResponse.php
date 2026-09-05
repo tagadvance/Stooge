@@ -81,14 +81,11 @@ class CurlResponse
     }
 
     /**
-     * Decodes the body as a JSON object, raising an `E_USER_WARNING` when the
-     * Content-Type is not `application/json`. Returns null both for a literal
-     * `null` body and for one that is not valid JSON at all.
-     *
-     * @throws \TypeError when the decoded top level is an array or a scalar
-     *         rather than an object.
+     * Decodes the body as JSON of any shape, raising an `E_USER_WARNING` when the
+     * Content-Type is not `application/json`. Returns null both for a literal `null` body
+     * and for one that is not valid JSON at all.
      */
-    public function getBodyAsJson(): ?\stdClass
+    public function getDecodedBody(): mixed
     {
         $contentType = $this->getHeader('Content-Type') ?? '';
         // e.g. "application/json; charset=utf-8"
@@ -98,6 +95,23 @@ class CurlResponse
             trigger_error($message, E_USER_WARNING);
         }
         return json_decode($this->body);
+    }
+
+    /**
+     * The body decoded as a JSON object. A body whose top level is an array or a scalar is
+     * valid JSON but not an object, so it is rejected here rather than raising a TypeError
+     * on the way out; reach for getDecodedBody() when the shape is not known to be an object.
+     *
+     * @throws CurlException when the decoded top level is not an object.
+     */
+    public function getBodyAsJson(): ?\stdClass
+    {
+        $decoded = $this->getDecodedBody();
+        if ($decoded !== null && ! $decoded instanceof \stdClass) {
+            throw new CurlException('JSON body is not an object; use getDecodedBody()');
+        }
+
+        return $decoded;
     }
 
     /**
