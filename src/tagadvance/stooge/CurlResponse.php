@@ -27,9 +27,37 @@ class CurlResponse
         return $this->statusCode;
     }
 
-    public function getHeader($name): string
+    /**
+     * Look up a header of the final hop, i.e. what the caller means by "the
+     * response headers" once redirects have been followed. Header names are
+     * case insensitive.
+     */
+    public function getHeader(string $name): ?string
     {
-        return $this->headers[$name];
+        $headers = $this->getLastHopHeaders();
+        return $headers[strtolower($name)] ?? null;
+    }
+
+    /**
+     * $headers is a list of per-hop header maps, one entry per redirect.
+     *
+     * @return array<string, string> the final hop's headers, keyed by lowercase name
+     */
+    private function getLastHopHeaders(): array
+    {
+        $hop = end($this->headers);
+        if (! is_array($hop)) {
+            return [];
+        }
+
+        $headers = [];
+        foreach ($hop as $name => $value) {
+            // the status line is stored under a numeric key
+            if (is_string($name)) {
+                $headers[strtolower($name)] = $value;
+            }
+        }
+        return $headers;
     }
 
     public function getBody(): string
@@ -39,7 +67,7 @@ class CurlResponse
 
     public function getBodyAsJson(): ?\stdClass
     {
-        $contentType = $this->headers['content-type'] ?? '';
+        $contentType = $this->getHeader('Content-Type') ?? '';
         if ($contentType != MimeType::JSON) {
             $message = "unexpected Content-Type: $contentType";
             trigger_error($message, E_USER_WARNING);
