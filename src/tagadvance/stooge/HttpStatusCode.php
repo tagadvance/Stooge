@@ -9,14 +9,14 @@ namespace tagadvance\stooge;
  *
  * @see http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  */
-final class HttpStatusCode {
-
+final class HttpStatusCode
+{
     /*
      * 1xx Informational responses
      *
      * An informational response indicates that the request was received and understood. It is issued on a provisional basis while request processing continues. It alerts the client to wait for a final response. The message consists only of the status line and optional header fields, and is terminated by an empty line. As the HTTP/1.0 standard did not define any 1xx status codes, servers must not[note 1] send a 1xx response to an HTTP/1.0 compliant client except under experimental conditions.
      */
-    
+
     /**
      * 100 Continue
      * The server has received the request headers and the client should proceed to send the request body (in the case of a request for which a body needs to be sent; for example, a POST request).
@@ -24,7 +24,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const CONTINUE = 100;
+    public const CONTINUE = 100;
 
     /**
      * 101 Switching Protocols
@@ -32,14 +32,14 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const SWITCHING_PROTOCOLS = 101;
+    public const SWITCHING_PROTOCOLS = 101;
 
     /*
      * 2xx Success
      *
      * This class of status codes indicates the action requested by the client was received, understood, accepted, and processed successfully.
      */
-    
+
     /**
      * 200 OK
      * Standard response for successful HTTP requests.
@@ -47,7 +47,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const OK = 200;
+    public const OK = 200;
 
     /**
      * 201 Created
@@ -55,7 +55,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const CREATED = 201;
+    public const CREATED = 201;
 
     /**
      * 202 Accepted
@@ -64,7 +64,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const ACCEPTED = 202;
+    public const ACCEPTED = 202;
 
     /**
      * 203 Non-Authoritative Information (since HTTP/1.1)
@@ -73,7 +73,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NONAUTHORATIVE_INFORMATION = 203;
+    public const NONAUTHORATIVE_INFORMATION = 203;
 
     /**
      * 204 No Content
@@ -81,7 +81,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NO_CONTENT = 204;
+    public const NO_CONTENT = 204;
 
     /**
      * 205 Reset Content
@@ -90,7 +90,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const RESET_CONTENT = 205;
+    public const RESET_CONTENT = 205;
 
     /**
      * 206 Partial Content (RFC 7233)
@@ -99,7 +99,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const PARTIAL_CONTENT = 206;
+    public const PARTIAL_CONTENT = 206;
 
     /**
      * 226 IM Used (RFC 3229)
@@ -107,7 +107,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const IM_USED = 226;
+    public const IM_USED = 226;
 
     /*
      * 3xx Redirection
@@ -116,7 +116,7 @@ final class HttpStatusCode {
      *
      * A user agent may carry out the additional action with no user interaction only if the method used in the second request is GET or HEAD. A user agent may automatically redirect a request. A user agent should detect and intervene to prevent cyclical redirects.
      */
-    
+
     /**
      * 300 Multiple Choices
      * Indicates multiple options for the resource from which the client may choose (via agent-driven content negotiation).
@@ -124,7 +124,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const MULTIPLE_CHOICES = 300;
+    public const MULTIPLE_CHOICES = 300;
 
     /**
      * 301 Moved Permanently
@@ -132,7 +132,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const MOVED_PERMANENTLY = 301;
+    public const MOVED_PERMANENTLY = 301;
 
     /**
      * 302 Found
@@ -141,7 +141,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const FOUND = 302;
+    public const FOUND = 302;
 
     /**
      * 303 See Other (since HTTP/1.1)
@@ -150,7 +150,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const SEE_OTHER = 303;
+    public const SEE_OTHER = 303;
 
     /**
      * 304 Not Modified (RFC 7232)
@@ -159,7 +159,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NOT_MODIFIED = 304;
+    public const NOT_MODIFIED = 304;
 
     /**
      * 305 Use Proxy (since HTTP/1.1)
@@ -168,7 +168,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const USE_PROXY = 305;
+    public const USE_PROXY = 305;
 
     /**
      * 306 Switch Proxy
@@ -177,7 +177,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const SWITCH_PROXY = 306;
+    public const SWITCH_PROXY = 306;
 
     /**
      * 307 Temporary Redirect (since HTTP/1.1)
@@ -186,7 +186,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const TEMPORARY_REDIRECT = 307;
+    public const TEMPORARY_REDIRECT = 307;
 
     /**
      * 308 Permanent Redirect (RFC 7538)
@@ -195,21 +195,21 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const PERMANENT_REDIRECT = 308;
+    public const PERMANENT_REDIRECT = 308;
 
     /*
      * 4xx Client errors
      *
      * The 4xx class of status codes is intended for situations in which the client seems to have erred. Except when responding to a HEAD request, the server should include an entity containing an explanation of the error situation, and whether it is a temporary or permanent condition. These status codes are applicable to any request method. User agents should display any included entity to the user.
      */
-    
+
     /**
      * 400 Bad Request
      * The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing).
      *
      * @var integer
      */
-    const BAD_REQUEST = 400;
+    public const BAD_REQUEST = 400;
 
     /**
      * 401 Unauthorized (RFC 7235)
@@ -219,7 +219,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const UNAUTHORIZED = 401;
+    public const UNAUTHORIZED = 401;
 
     /**
      * 402 Payment Required
@@ -228,7 +228,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const PAYMENT_REQUIRED = 402;
+    public const PAYMENT_REQUIRED = 402;
 
     /**
      * 403 Forbidden
@@ -237,7 +237,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const FORBIDDEN = 403;
+    public const FORBIDDEN = 403;
 
     /**
      * 404 Not Found
@@ -246,7 +246,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NOT_FOUND = 404;
+    public const NOT_FOUND = 404;
 
     /**
      * 405 Method Not Allowed
@@ -254,7 +254,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const METHOD_NOT_ALLOWED = 405;
+    public const METHOD_NOT_ALLOWED = 405;
 
     /**
      * 406 Not Acceptable
@@ -263,7 +263,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NOT_ACCEPTABLE = 406;
+    public const NOT_ACCEPTABLE = 406;
 
     /**
      * 407 Proxy Authentication Required (RFC 7235)
@@ -271,7 +271,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const PROXY_AUTHENTICATION_REQUIRED = 407;
+    public const PROXY_AUTHENTICATION_REQUIRED = 407;
 
     /**
      * 408 Request Timeout
@@ -280,7 +280,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const REQUEST_TIMEOUT = 408;
+    public const REQUEST_TIMEOUT = 408;
 
     /**
      * 409 Conflict
@@ -288,7 +288,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const CONFLICT = 409;
+    public const CONFLICT = 409;
 
     /**
      * 410 Gone
@@ -297,7 +297,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const GONE = 410;
+    public const GONE = 410;
 
     /**
      * 411 Length Required
@@ -305,7 +305,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const LENGTH_REQUIRED = 411;
+    public const LENGTH_REQUIRED = 411;
 
     /**
      * 412 Precondition Failed (RFC 7232)
@@ -313,7 +313,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const PRECONDITION_FAILED = 412;
+    public const PRECONDITION_FAILED = 412;
 
     /**
      * 413 Payload Too Large (RFC 7231)
@@ -322,7 +322,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const REQUEST_ENTITY_TOO_LARGE = 413;
+    public const REQUEST_ENTITY_TOO_LARGE = 413;
 
     /**
      * 414 URI Too Long (RFC 7231)
@@ -331,7 +331,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const REQUEST_URI_TOO_LONG = 414;
+    public const REQUEST_URI_TOO_LONG = 414;
 
     /**
      * 415 Unsupported Media Type
@@ -340,7 +340,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const UNSUPPORTED_MEDIA_TYPE = 415;
+    public const UNSUPPORTED_MEDIA_TYPE = 415;
 
     /**
      * 416 Range Not Satisfiable (RFC 7233)
@@ -349,7 +349,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
+    public const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
 
     /**
      * 417 Expectation Failed
@@ -357,7 +357,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const EXPECTATION_FAILED = 417;
+    public const EXPECTATION_FAILED = 417;
 
     /**
      * 418 I'm a teapot (RFC 2324)
@@ -366,7 +366,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const IM_A_TEAPOT = 418;
+    public const IM_A_TEAPOT = 418;
 
     /**
      * 421 Misdirected Request (RFC 7540)
@@ -374,7 +374,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const MISDIRECTED_REQUEST = 421;
+    public const MISDIRECTED_REQUEST = 421;
 
     /**
      * 426 Upgrade Required
@@ -382,7 +382,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const UPGRADE_REQUIRED = 426;
+    public const UPGRADE_REQUIRED = 426;
 
     /**
      * 428 Precondition Required (RFC 6585)
@@ -391,7 +391,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const PRECONDITION_REQUIRED = 428;
+    public const PRECONDITION_REQUIRED = 428;
 
     /**
      * 429 Too Many Requests (RFC 6585)
@@ -400,7 +400,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const TOO_MANY_REQUESTS = 429;
+    public const TOO_MANY_REQUESTS = 429;
 
     /**
      * 431 Request Header Fields Too Large (RFC 6585)
@@ -408,7 +408,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
+    public const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
 
     /**
      * 451 Unavailable For Legal Reasons (RFC 7725)
@@ -417,7 +417,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    public const UNAVAILABLE_FOR_LEGAL_REASONS = 451;
 
     /*
      * 5xx Server error
@@ -426,14 +426,14 @@ final class HttpStatusCode {
      *
      * Response status codes beginning with the digit "5" indicate cases in which the server is aware that it has encountered an error or is otherwise incapable of performing the request. Except when responding to a HEAD request, the server should include an entity containing an explanation of the error situation, and indicate whether it is a temporary or permanent condition. Likewise, user agents should display any included entity to the user. These response codes are applicable to any request method.
      */
-    
+
     /**
      * 500 Internal Server Error
      * A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
      *
      * @var integer
      */
-    const INTERNAL_SERVER_ERROR = 500;
+    public const INTERNAL_SERVER_ERROR = 500;
 
     /**
      * 501 Not Implemented
@@ -442,7 +442,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NOT_IMPLEMENTED = 501;
+    public const NOT_IMPLEMENTED = 501;
 
     /**
      * 502 Bad Gateway
@@ -450,7 +450,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const BAD_GATEWAY = 502;
+    public const BAD_GATEWAY = 502;
 
     /**
      * 503 Service Unavailable
@@ -459,7 +459,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const SERVICE_UNAVAILABLE = 503;
+    public const SERVICE_UNAVAILABLE = 503;
 
     /**
      * 504 Gateway Timeout
@@ -467,7 +467,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const GATEWAY_TIMEOUT = 504;
+    public const GATEWAY_TIMEOUT = 504;
 
     /**
      * 505 HTTP Version Not Supported
@@ -475,7 +475,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const HTTP_VERSION_NOT_SUPPORTED = 505;
+    public const HTTP_VERSION_NOT_SUPPORTED = 505;
 
     /**
      * 506 Variant Also Negotiates (RFC 2295)
@@ -483,7 +483,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const VARIANT_ALSO_NEGOTIATES = 506;
+    public const VARIANT_ALSO_NEGOTIATES = 506;
 
     /**
      * 510 Not Extended (RFC 2774)
@@ -491,7 +491,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NOT_EXTENDED = 510;
+    public const NOT_EXTENDED = 510;
 
     /**
      * 511 Network Authentication Required (RFC 6585)
@@ -500,7 +500,7 @@ final class HttpStatusCode {
      *
      * @var integer
      */
-    const NETWORK_AUTHENTICATION_REQUIRED = 511;
+    public const NETWORK_AUTHENTICATION_REQUIRED = 511;
 
     /**
      * Hidden constructor.
@@ -513,10 +513,11 @@ final class HttpStatusCode {
      * @throws InvalidArgumentException
      * @return string
      */
-    static function valueOf($code): string {
+    public static function valueOf($code): string
+    {
         $classes = [
-                __CLASS__,
-                WebDAV::class
+            __CLASS__,
+            WebDAV::class,
         ];
         foreach ($classes as $class) {
             $r = new \ReflectionClass($class);
@@ -527,7 +528,7 @@ final class HttpStatusCode {
                 }
             }
         }
-        
+
         throw new \InvalidArgumentException($code);
     }
 

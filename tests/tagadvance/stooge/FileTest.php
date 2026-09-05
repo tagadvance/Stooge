@@ -4,15 +4,17 @@ namespace tagadvance\stooge;
 
 use PHPUnit\Framework\TestCase;
 
-class FileTest extends TestCase {
-
-    function testCreateTempFileIsNotNull() {
+class FileTest extends TestCase
+{
+    public function testCreateTempFileIsNotNull()
+    {
         $name = 'foo';
         $file = File::createTempFile($name);
         $this->assertNotNull($file);
     }
 
-    function testCreateTempFileWithDirectoryIsNotNull() {
+    public function testCreateTempFileWithDirectoryIsNotNull()
+    {
         $name = 'foo';
         $directory = '/tmp';
         $file = File::createTempFile($name, $directory);

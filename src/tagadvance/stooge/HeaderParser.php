@@ -5,10 +5,10 @@ namespace tagadvance\stooge;
 /**
  *
  * @author Tag <tagadvance+stooge@gmail.com>
- *        
+ *
  */
-interface HeaderParser {
-
-    function parseHeaders(string $content): array;
+interface HeaderParser
+{
+    public function parseHeaders(string $content): array;
 
 }

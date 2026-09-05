@@ -7,14 +7,14 @@ namespace tagadvance\stooge;
  *
  * @see http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
  */
-final class WebDAV {
-
+final class WebDAV
+{
     /**
      * 102 Processing (WebDAV; RFC 2518)
      * A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request.
      * This code indicates that the server has received and is processing the request, but no response is available yet. This prevents the client from timing out and assuming the request was lost.
      */
-    const PROCESSING = 102;
+    public const PROCESSING = 102;
 
     /**
      * 207 Multi-Status (WebDAV; RFC 4918)
@@ -22,7 +22,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const MULTI_STATUS = 207;
+    public const MULTI_STATUS = 207;
 
     /**
      * 208 Already Reported (WebDAV; RFC 5842)
@@ -30,7 +30,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const ALREADY_REPORTED = 208;
+    public const ALREADY_REPORTED = 208;
 
     /**
      * 422 Unprocessable Entity (WebDAV; RFC 4918)
@@ -38,7 +38,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const UNPROCESSABLE_ENTITY = 422;
+    public const UNPROCESSABLE_ENTITY = 422;
 
     /**
      * 423 Locked (WebDAV; RFC 4918)
@@ -46,7 +46,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const LOCKED = 423;
+    public const LOCKED = 423;
 
     /**
      * 424 Failed Dependency (WebDAV; RFC 4918)
@@ -54,7 +54,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const FAILED_DEPENDENCY = 424;
+    public const FAILED_DEPENDENCY = 424;
 
     /**
      * 507 Insufficient Storage (WebDAV; RFC 4918)
@@ -62,7 +62,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const INSUFFICIENT_STORAGE = 507;
+    public const INSUFFICIENT_STORAGE = 507;
 
     /**
      * 508 Loop Detected (WebDAV; RFC 5842)
@@ -70,7 +70,7 @@ final class WebDAV {
      *
      * @var integer
      */
-    const LOOP_DETECTED = 508;
+    public const LOOP_DETECTED = 508;
 
     /**
      * Hidden constructor.

@@ -9,8 +9,8 @@ define('USER_AGENT_CHROME', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebK
  * @author Tag <tagadvance+stooge@gmail.com>
  * @see http://www.php.net/manual/en/intro.curl.php
  */
-class CurlRequest {
-
+class CurlRequest
+{
     /**
      *
      * @var resource
@@ -27,7 +27,8 @@ class CurlRequest {
      *
      * @see http://www.php.net/manual/en/function.curl-init.php
      */
-    function __construct() {
+    public function __construct()
+    {
         $this->curlSession = curl_init();
     }
 
@@ -35,7 +36,8 @@ class CurlRequest {
      *
      * @return resource
      */
-    function getCurlSession() {
+    public function getCurlSession()
+    {
         return $this->curlSession;
     }
 
@@ -44,7 +46,8 @@ class CurlRequest {
      * @return \tagadvance\stooge\CurlRequest
      * @see http://www.php.net/manual/en/function.curl-copy-handle.php
      */
-    function __clone() {
+    public function __clone()
+    {
         $this->curlSession = curl_copy_handle($this->curlSession);
         // TODO: does $options need to be copied too?
     }
@@ -54,7 +57,8 @@ class CurlRequest {
      * @return self
      * @throws CurlException
      */
-    function autoDetectUserAgent(): self {
+    public function autoDetectUserAgent(): self
+    {
         $agent = $_SERVER['HTTP_REFERER'] ?? USER_AGENT_CHROME;
         $this->setOption(CURLOPT_USERAGENT, $agent);
         return $this;
@@ -67,7 +71,8 @@ class CurlRequest {
      * @throws CurlException
      * @see http://www.php.net/manual/en/function.curl-escape.php
      */
-    function escape($string): string {
+    public function escape($string): string
+    {
         $result = curl_escape($this->curlSession, $string);
         if ($result === false) {
             throw new CurlException(__METHOD__ . "($string)");
@@ -82,7 +87,8 @@ class CurlRequest {
      * @throws CurlException
      * @see http://www.php.net/manual/en/function.curl-unescape.php
      */
-    function unescape($string): string {
+    public function unescape($string): string
+    {
         $result = curl_unescape($this->curlSession, $string);
         if ($result === false) {
             throw new CurlException(__METHOD__ . "($string)");
@@ -97,14 +103,15 @@ class CurlRequest {
      * @return self
      * @throws CurlException
      */
-    function autoCookieJar($cookiePath = null) {
+    public function autoCookieJar($cookiePath = null)
+    {
         if ($cookiePath === null) {
             $cookiePath = File::createTempFile('COOKIE')->getRealPath();
         }
-        
+
         $this->setOptions([
-                CURLOPT_COOKIEJAR => $cookiePath,
-                CURLOPT_COOKIEFILE => $cookiePath
+            CURLOPT_COOKIEJAR => $cookiePath,
+            CURLOPT_COOKIEFILE => $cookiePath,
         ]);
         return $this;
     }
@@ -114,7 +121,8 @@ class CurlRequest {
      * @param unknown $name
      * @return mixed
      */
-    function __get($name) {
+    public function __get($name)
+    {
         return $this->getOption($name);
     }
 
@@ -123,7 +131,8 @@ class CurlRequest {
      * @param unknown $name
      * @param unknown $value
      */
-    function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $magicOption = $this->magicOption($name);
         $this->setOption($magicOption, $value);
     }
@@ -134,10 +143,11 @@ class CurlRequest {
      * @param array $arguments
      * @throws \BadMethodCallException
      */
-    function __call(string $name, array $arguments) {
+    public function __call(string $name, array $arguments)
+    {
         $nameStartsWithSet = strpos($name, $needle = 'set') === 0;
         $count = count($arguments);
-        
+
         switch ($count) {
             case 0:
                 $value = true;
@@ -146,17 +156,17 @@ class CurlRequest {
                 $value = array_shift($arguments);
                 break;
         }
-        
+
         if ($nameStartsWithSet && isset($value)) {
             $setter = substr($name, $start = strlen($needle));
-            
+
             // https://stackoverflow.com/a/19533226/625688
             $underscore = preg_replace('/(?<!^)[A-Z]/', '_$0', $setter);
             $upper = strtoupper($underscore);
             $this->$upper = $value;
             return $this;
         }
-        
+
         $message = "$name(...)";
         throw new \BadMethodCallException($message);
     }
@@ -166,7 +176,8 @@ class CurlRequest {
      * @param unknown $option
      * @return unknown
      */
-    function __isset($option) {
+    public function __isset($option)
+    {
         $magicOption = $this->magicOption($option);
         return isset($this->options[$magicOption]);
     }
@@ -176,7 +187,8 @@ class CurlRequest {
      * @param unknown $option
      * @throws \RuntimeException
      */
-    function __unset($option) {
+    public function __unset($option)
+    {
         $message = "unsupported operation: __unset($option)";
         throw new \RuntimeException($message);
     }
@@ -186,7 +198,8 @@ class CurlRequest {
      * @param unknown $option
      * @return mixed
      */
-    function getOption($option) {
+    public function getOption($option)
+    {
         $magicOption = $this->magicOption($option);
         return $this->options[$magicOption];
     }
@@ -197,18 +210,19 @@ class CurlRequest {
      * @throws \InvalidArgumentException
      * @return mixed
      */
-    protected function magicOption($option) {
+    protected function magicOption($option)
+    {
         if (defined($option)) {
             return constant($option);
         }
-        
+
         $prefixes = [
-                'CURLOPT_',
-                'CURLINFO_',
-                'CURLMOPT_',
-                'CURLSSH_',
-                'CURLSSLOPT_',
-                'CURL_'
+            'CURLOPT_',
+            'CURLINFO_',
+            'CURLMOPT_',
+            'CURLSSH_',
+            'CURLSSLOPT_',
+            'CURL_',
         ];
         foreach ($prefixes as $prefix) {
             $curlopt = $prefix . strtoupper($option);
@@ -216,7 +230,7 @@ class CurlRequest {
                 return constant($curlopt);
             }
         }
-        
+
         throw new \InvalidArgumentException($option);
     }
 
@@ -228,7 +242,8 @@ class CurlRequest {
      * @return self
      * @see http://php.net/curl_setopt
      */
-    function setOption($option, $value): self {
+    public function setOption($option, $value): self
+    {
         $this->options[$option] = $value;
         $result = curl_setopt($this->curlSession, $option, $value);
         if ($result === false) {
@@ -242,7 +257,8 @@ class CurlRequest {
      * @param array $options
      * @return self
      */
-    function setOptions(array $options): self {
+    public function setOptions(array $options): self
+    {
         // curl_setopt_array($this->session, $options);
         // this way we get a useful message in the event of an exception
         foreach ($options as $option => $value) {
@@ -256,7 +272,8 @@ class CurlRequest {
      * @param string $url
      * @return \tagadvance\stooge\CurlResponse
      */
-    function get(string $url): CurlResponse {
+    public function get(string $url): CurlResponse
+    {
         return $this->setUrl($url)->execute();
     }
 
@@ -265,12 +282,13 @@ class CurlRequest {
      * @param mixed $fields
      * @return self
      */
-    function post($url, $fields): CurlResponse {
+    public function post($url, $fields): CurlResponse
+    {
         return $this->setUrl($url)
             ->setOptions([
                 CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => $fields
-        ])
+                CURLOPT_POSTFIELDS => $fields,
+            ])
             ->execute();
     }
 
@@ -279,12 +297,13 @@ class CurlRequest {
      * @param mixed $fields
      * @return self
      */
-    function put($url, $fields): CurlResponse {
+    public function put($url, $fields): CurlResponse
+    {
         return $this->setUrl($url)
             ->setOptions([
                 CURLOPT_CUSTOMREQUEST => 'PUT',
-                CURLOPT_POSTFIELDS => $fields
-        ])
+                CURLOPT_POSTFIELDS => $fields,
+            ])
             ->execute();
     }
 
@@ -293,12 +312,13 @@ class CurlRequest {
      * @param mixed $fields
      * @return self
      */
-    function patch($url, $fields): CurlResponse {
+    public function patch($url, $fields): CurlResponse
+    {
         return $this->setUrl($url)
             ->setOptions([
                 CURLOPT_CUSTOMREQUEST => 'PATCH',
-                CURLOPT_POSTFIELDS => $fields
-        ])
+                CURLOPT_POSTFIELDS => $fields,
+            ])
             ->execute();
     }
 
@@ -307,12 +327,13 @@ class CurlRequest {
      * @param mixed $fields
      * @return self
      */
-    function delete($url, $fields): CurlResponse {
+    public function delete($url, $fields): CurlResponse
+    {
         return $this->setUrl($url)
             ->setOptions([
                 CURLOPT_CUSTOMREQUEST => 'DELETE',
-                CURLOPT_POSTFIELDS => $fields
-        ])
+                CURLOPT_POSTFIELDS => $fields,
+            ])
             ->execute();
     }
 
@@ -320,7 +341,8 @@ class CurlRequest {
      *
      * @return \tagadvance\stooge\CurlResponse
      */
-    function __invoke() {
+    public function __invoke()
+    {
         return $this->execute();
     }
 
@@ -330,7 +352,8 @@ class CurlRequest {
      *
      * @return CurlResponse
      */
-    function execute(): CurlResponse {
+    public function execute(): CurlResponse
+    {
         $callback = $this->HEADERFUNCTION ?? function ($curlResource, $headerData) {
             return strlen($headerData);
         };
@@ -339,17 +362,17 @@ class CurlRequest {
             $headerText .= $headerData;
             return $callback($curlResource, $headerData);
         };
-        
+
         $result = $this->rawExec();
-        
+
         $parser = new MKJHeaderParser();
         $headers = $parser->parseHeaders($headerText);
-        
+
         if (isset($this->CURLOPT_HEADER) && $this->CURLOPT_HEADER) {
             $headerSize = curl_getinfo($this->curlSession, CURLINFO_HEADER_SIZE);
             $result = substr($result, $headerSize);
         }
-        
+
         $code = $this->getInformation(CURLINFO_HTTP_CODE);
         return new CurlResponse($code, $headers, $result);
     }
@@ -360,7 +383,8 @@ class CurlRequest {
      * @throws CurlException
      * @return mixed
      */
-    function rawExec() {
+    public function rawExec()
+    {
         $result = curl_exec($this->curlSession);
         if ($result === false) {
             $message = curl_error($this->curlSession);
@@ -375,7 +399,8 @@ class CurlRequest {
      * @return self
      * @see http://php.net/manual/en/function.curl-reset.php
      */
-    function reset(): self {
+    public function reset(): self
+    {
         curl_reset($this->curlSession);
         return $this;
     }
@@ -385,7 +410,8 @@ class CurlRequest {
      * @return self
      * @see http://php.net/manual/en/function.curl-close.php
      */
-    function close(): self {
+    public function close(): self
+    {
         curl_close($this->curlSession);
         return $this;
     }
@@ -395,7 +421,8 @@ class CurlRequest {
      * @param integer $option
      * @see http://www.php.net/manual/en/function.curl-getinfo.php
      */
-    function getInformation($option = null) {
+    public function getInformation($option = null)
+    {
         return curl_getinfo($this->curlSession, $option);
     }
 
@@ -405,7 +432,8 @@ class CurlRequest {
      * @return array
      * @see http://www.php.net/manual/en/function.curl-version.php
      */
-    static function version($age = CURLVERSION_NOW): array {
+    public static function version($age = CURLVERSION_NOW): array
+    {
         return curl_version($age);
     }
 

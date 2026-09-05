@@ -7,33 +7,38 @@ namespace tagadvance\stooge;
  * @author Tag <tagadvance+stooge@gmail.com>
  * @see https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message
  */
-class CurlResponse {
-
+class CurlResponse
+{
     private $statusCode;
 
     private $body;
 
     private $headers = [];
 
-    function __construct(int $statusCode, array $headers, string $body) {
+    public function __construct(int $statusCode, array $headers, string $body)
+    {
         $this->statusCode = $statusCode;
         $this->body = $body;
         $this->headers = $headers;
     }
 
-    function getCode(): int {
+    public function getCode(): int
+    {
         return $this->statusCode;
     }
 
-    function getHeader($name): string {
+    public function getHeader($name): string
+    {
         return $this->headers[$name];
     }
 
-    function getBody(): string {
+    public function getBody(): string
+    {
         return $this->body;
     }
 
-    function getBodyAsJson(): ?\stdClass {
+    public function getBodyAsJson(): ?\stdClass
+    {
         $contentType = $this->headers['content-type'] ?? '';
         if ($contentType != MimeType::JSON) {
             $message = "unexpected Content-Type: $contentType";
@@ -42,7 +47,8 @@ class CurlResponse {
         return json_decode($this->body);
     }
 
-    function __toString() {
+    public function __toString()
+    {
         $headerData = '';
         foreach ($this->headers as $headers) {
             foreach ($headers as $name => $value) {
@@ -50,7 +56,7 @@ class CurlResponse {
                 if (! empty($headerData) && strpos($headerData, PHP_EOL, - strlen(PHP_EOL)) === false) {
                     $headerData .= PHP_EOL;
                 }
-                
+
                 if (is_numeric($name)) {
                     $headerData .= "| $value";
                 } else {
@@ -58,7 +64,7 @@ class CurlResponse {
                 }
             }
         }
-        
+
         $body = '';
         $lines = explode($delimiter = PHP_EOL, $this->body);
         foreach ($lines as $line) {
@@ -67,7 +73,7 @@ class CurlResponse {
             }
             $body .= "| $line";
         }
-        
+
         return <<<RESPONSE
 ┌─────────────────────────
 $headerData
