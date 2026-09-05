@@ -38,8 +38,8 @@ $url = 'http://intentionallyblankpage.com';
 // $url = 'http://intentionallyblankpage.com/test.html';
 
 $request = new CurlRequest ();
-$request->autoDetectUserAgent ();
 $response = $request
+		->autoDetectUserAgent ()
 		->autoCookieJar()
 		->setAutoreferer ()
 		->setReturntransfer ()
