@@ -1,8 +1,8 @@
 {
 	"name" : "tagadvance/stooge",
-	"description" : "...",
-	"type" : "project",
-	"keywords": ["HTTP", "HTTPS", "cURL", "client", "request", "URL", "query", "cookie", "session"],
+	"description" : "A fluent builder around PHP's cURL extension for making HTTP requests.",
+	"type" : "library",
+	"keywords": ["http", "https", "curl", "client", "request", "url", "query", "cookie", "session", "webdav"],
 	"license" : "MIT",
 	"authors" : [{
 			"name" : "Tag",
