@@ -16,7 +16,7 @@ class CurlException extends \Exception
      *            One of the <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html">cURL error code</a> constants.
      * @param ?\Exception $previous
      */
-    public function __construct($message, $code, ?\Exception $previous = null)
+    public function __construct($message, $code = 0, ?\Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

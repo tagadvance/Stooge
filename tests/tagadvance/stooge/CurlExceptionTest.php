@@ -17,4 +17,10 @@ class CurlExceptionTest extends TestCase
         $this->assertTrue($condition);
     }
 
+    public function testCodeIsOptional()
+    {
+        $e = new CurlException('foo');
+
+        $this->assertSame(0, $e->getCode());
+    }
 }
