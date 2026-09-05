@@ -5,7 +5,14 @@ namespace tagadvance\stooge;
 define('USER_AGENT_CHROME', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36');
 
 /**
+ * Any `setFoo(...)` call is routed through {@see CurlRequest::__call()} to the
+ * matching `CURLOPT_FOO` option, and any `$request->CURLOPT_FOO` access through
+ * {@see CurlRequest::__get()}. Only the ones this class uses on itself are
+ * annotated below.
  *
+ * @method self setUrl(string $url)
+ * @property mixed $HEADERFUNCTION
+ * @property mixed $CURLOPT_HEADER
  * @author Tag <tagadvance+stooge@gmail.com>
  * @see http://www.php.net/manual/en/intro.curl.php
  */
@@ -43,7 +50,6 @@ class CurlRequest
 
     /**
      *
-     * @return \tagadvance\stooge\CurlRequest
      * @see http://www.php.net/manual/en/function.curl-copy-handle.php
      */
     public function __clone()
@@ -118,7 +124,7 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $name
+     * @param mixed $name
      * @return mixed
      */
     public function __get($name)
@@ -128,8 +134,8 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $name
-     * @param unknown $value
+     * @param mixed $name
+     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -173,8 +179,8 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $option
-     * @return unknown
+     * @param mixed $option
+     * @return bool
      */
     public function __isset($option)
     {
@@ -184,7 +190,7 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $option
+     * @param mixed $option
      * @throws \RuntimeException
      */
     public function __unset($option)
@@ -195,7 +201,7 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $option
+     * @param mixed $option
      * @return mixed
      */
     public function getOption($option)
@@ -206,7 +212,7 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $option
+     * @param mixed $option
      * @throws \InvalidArgumentException
      * @return mixed
      */
@@ -236,8 +242,8 @@ class CurlRequest
 
     /**
      *
-     * @param unknown $option
-     * @param unknown $value
+     * @param mixed $option
+     * @param mixed $value
      * @throws CurlException
      * @return self
      * @see http://php.net/curl_setopt
@@ -280,7 +286,7 @@ class CurlRequest
     /**
      *
      * @param mixed $fields
-     * @return self
+     * @return CurlResponse
      */
     public function post($url, $fields): CurlResponse
     {
@@ -295,7 +301,7 @@ class CurlRequest
     /**
      *
      * @param mixed $fields
-     * @return self
+     * @return CurlResponse
      */
     public function put($url, $fields): CurlResponse
     {
@@ -310,7 +316,7 @@ class CurlRequest
     /**
      *
      * @param mixed $fields
-     * @return self
+     * @return CurlResponse
      */
     public function patch($url, $fields): CurlResponse
     {
@@ -325,7 +331,7 @@ class CurlRequest
     /**
      *
      * @param mixed $fields
-     * @return self
+     * @return CurlResponse
      */
     public function delete($url, $fields): CurlResponse
     {

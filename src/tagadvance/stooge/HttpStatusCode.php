@@ -510,7 +510,7 @@ final class HttpStatusCode
     /**
      *
      * @param integer $code
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      * @return string
      */
     public static function valueOf($code): string
