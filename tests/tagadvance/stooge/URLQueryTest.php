@@ -64,4 +64,28 @@ class URLQueryTest extends TestCase
         $this->assertEquals($expected, $string);
     }
 
+    public function testCreateFromQueryStringKeepsSeparatorsInValues()
+    {
+        $query = '?token=YWJjZA==&next=' . urlencode('/a?b=c');
+        $urlQuery = URLQuery::createFromQueryString($query);
+
+        $this->assertSame('YWJjZA==', $urlQuery->token);
+        $this->assertSame('/a?b=c', $urlQuery->next);
+    }
+
+    public function testCreateFromQueryStringHandlesAPairWithoutAValue()
+    {
+        $query = '?flag&foo=bar';
+        $urlQuery = URLQuery::createFromQueryString($query);
+
+        $this->assertSame('', $urlQuery->flag);
+        $this->assertSame('bar', $urlQuery->foo);
+    }
+
+    public function testCreateFromQueryStringHandlesAnEmptyQuery()
+    {
+        $urlQuery = URLQuery::createFromQueryString('?');
+
+        $this->assertSame('?', $urlQuery->toString());
+    }
 }

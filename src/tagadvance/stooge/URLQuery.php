@@ -16,7 +16,12 @@ class URLQuery
 
         $keyValuePairs = explode($delimiter, $query);
         foreach ($keyValuePairs as $pair) {
-            list($key, $value) = explode($keyValuePairSeparator, $pair);
+            if ($pair === '') {
+                continue;
+            }
+
+            // split on the first separator only; a value may contain more
+            list($key, $value) = array_pad(explode($keyValuePairSeparator, $pair, 2), 2, '');
             $decodedKey = urldecode($key);
             $decodedValue = urldecode($value);
             $parameters[$decodedKey] = $decodedValue;
