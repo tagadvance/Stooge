@@ -428,13 +428,12 @@ class CurlRequest
 
     /**
      *
-     * @param integer $age
      * @return array
      * @see http://www.php.net/manual/en/function.curl-version.php
      */
-    public static function version($age = CURLVERSION_NOW): array
+    public static function version(): array
     {
-        return curl_version($age);
+        return curl_version();
     }
 
 }
