@@ -2,10 +2,21 @@
 
 namespace tagadvance\stooge;
 
+/**
+ * A mutable bag of query parameters exposed as properties. Values are held
+ * decoded and are only percent-encoded by {@see URLQuery::toString()}.
+ */
 class URLQuery
 {
     private $parameters;
 
+    /**
+     * A repeated key collapses to its last occurrence, and PHP's `a[]=1&a[]=2`
+     * convention is not expanded — the literal key `a[]` is stored instead.
+     *
+     * @param string $prefix
+     *            Stripped from the front of $query when present.
+     */
     public static function createFromQueryString(string $query, $prefix = '?', $keyValuePairSeparator = '=', $delimiter = '&'): self
     {
         $parameters = [];
@@ -35,6 +46,10 @@ class URLQuery
         $this->parameters = $parameters;
     }
 
+    /**
+     * Emits an "Undefined array key" warning and returns null when the parameter
+     * is absent; test with `isset()` first.
+     */
     public function __get(string $name)
     {
         return $this->parameters[$name];
@@ -60,6 +75,10 @@ class URLQuery
         return $this->toString();
     }
 
+    /**
+     * Encoding follows `application/x-www-form-urlencoded` rather than RFC 3986,
+     * so a space becomes `+` and not `%20`.
+     */
     public function toString($prefix = '?', $keyValuePairSeparator = '=', $delimiter = '&'): string
     {
         $string = $prefix;

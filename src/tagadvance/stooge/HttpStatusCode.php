@@ -508,10 +508,11 @@ final class HttpStatusCode
     private function __construct() {}
 
     /**
+     * The constant name for a status code, searching {@see WebDAV} as well as
+     * this class.
      *
      * @param integer $code
-     * @throws \InvalidArgumentException
-     * @return string
+     * @throws \InvalidArgumentException when no constant holds that value.
      */
     public static function valueOf($code): string
     {

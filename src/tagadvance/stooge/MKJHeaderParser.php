@@ -3,11 +3,16 @@
 namespace tagadvance\stooge;
 
 /**
+ * Splits libcurl's header block on blank lines, so a redirect chain yields one
+ * map per hop.
  *
  * @see https://stackoverflow.com/a/18682872/625688
  */
 class MKJHeaderParser implements HeaderParser
 {
+    /**
+     * @return array<int, array<int|string, string>> one map per hop, in request order
+     */
     public function parseHeaders(string $content): array
     {
         $headers = [];
@@ -25,6 +30,12 @@ class MKJHeaderParser implements HeaderParser
         return $headers;
     }
 
+    /**
+     * A field repeated within one hop collapses to its last occurrence.
+     *
+     * @return array<int|string, string> the status line under the numeric key 0,
+     *         each field under its name
+     */
     private function parseRequestHeaders($request)
     {
         $headers = [];

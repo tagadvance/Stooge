@@ -2,6 +2,10 @@
 
 namespace tagadvance\stooge;
 
+/**
+ * Declared at file scope, so autoloading this class defines a *global* constant
+ * as a side effect. The value is a Chrome 58 string frozen in 2017.
+ */
 define('USER_AGENT_CHROME', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36');
 
 /**
@@ -21,14 +25,16 @@ class CurlRequest
     private \CurlHandle $curlSession;
 
     /**
+     * Local mirror of every option set through this object, keyed by `CURLOPT_*`
+     * value. libcurl cannot be read back, so this is what `getOption()` answers
+     * from.
      *
      * @var array
      */
     private $options = [];
 
     /**
-     *
-     * @throws CurlException
+     * @throws CurlException when a cURL session could not be initialized.
      * @see http://www.php.net/manual/en/function.curl-init.php
      */
     public function __construct()
@@ -46,8 +52,7 @@ class CurlRequest
     }
 
     /**
-     *
-     * @throws CurlException
+     * @throws CurlException when libcurl could not duplicate the handle.
      * @see http://www.php.net/manual/en/function.curl-copy-handle.php
      */
     public function __clone()
@@ -61,9 +66,12 @@ class CurlRequest
     }
 
     /**
+     * Forwards the inbound `$_SERVER['HTTP_USER_AGENT']` on this outbound request,
+     * falling back to `USER_AGENT_CHROME` when there is none. That inbound header
+     * is attacker controlled and is copied verbatim, with no header-injection
+     * guard and no length cap.
      *
-     * @return self
-     * @throws CurlException
+     * @throws CurlException when the option could not be set.
      */
     public function autoDetectUserAgent(): self
     {
@@ -73,10 +81,11 @@ class CurlRequest
     }
 
     /**
+     * Percent-encodes by libcurl's rules rather than PHP's, so a space becomes
+     * `%20` and not `+`.
      *
      * @param string $string
-     *            The string to be encoded.
-     * @throws CurlException
+     * @throws CurlException when libcurl rejects the input.
      * @see http://www.php.net/manual/en/function.curl-escape.php
      */
     public function escape($string): string
@@ -89,10 +98,11 @@ class CurlRequest
     }
 
     /**
+     * The inverse of {@see CurlRequest::escape()}, so a `+` is left as-is instead
+     * of being decoded to a space.
      *
      * @param string $string
-     *            The URL encoded string to be decoded.
-     * @throws CurlException
+     * @throws CurlException when libcurl rejects the input.
      * @see http://www.php.net/manual/en/function.curl-unescape.php
      */
     public function unescape($string): string
@@ -105,11 +115,13 @@ class CurlRequest
     }
 
     /**
-     * Cause this curl session to use a temporary cookie file which is
-     * automatically deleted when the script ends.
+     * Give this session a cookie jar so a server session survives across requests.
+     * With no argument the jar is a temporary file deleted when the script ends;
+     * pass a path to keep the cookies beyond it.
      *
+     * @param ?string $cookiePath
      * @return self
-     * @throws CurlException
+     * @throws CurlException when the temporary file or the options could not be set.
      */
     public function autoCookieJar($cookiePath = null)
     {
@@ -125,20 +137,13 @@ class CurlRequest
     }
 
     /**
-     *
-     * @param mixed $name
-     * @return mixed
+     * @see CurlRequest::getOption()
      */
     public function __get($name)
     {
         return $this->getOption($name);
     }
 
-    /**
-     *
-     * @param mixed $name
-     * @param mixed $value
-     */
     public function __set($name, $value)
     {
         $magicOption = $this->magicOption($name);
@@ -146,10 +151,15 @@ class CurlRequest
     }
 
     /**
+     * A zero-argument `setFoo()` sets `CURLOPT_FOO` to `true`, while a single
+     * explicit `null` is rejected rather than passed through. `setUserAgent()`
+     * resolves to the undefined `CURLOPT_USER_AGENT` and throws — reach that
+     * option as `setUseragent()` or `setOption(CURLOPT_USERAGENT, ...)`.
      *
-     * @param string $name
-     * @param array $arguments
-     * @throws \BadMethodCallException
+     * @throws \BadMethodCallException when $name is not a `set*` method, or more
+     *         than one argument was passed.
+     * @throws \InvalidArgumentException when no cURL option matches $name.
+     * @throws CurlException when libcurl rejects the option or its value.
      */
     public function __call(string $name, array $arguments)
     {
@@ -180,9 +190,10 @@ class CurlRequest
     }
 
     /**
+     * Reports whether the option was set through this object, not whether libcurl
+     * holds a value for it.
      *
-     * @param mixed $option
-     * @return bool
+     * @throws \InvalidArgumentException when no cURL option matches $option.
      */
     public function __isset($option)
     {
@@ -191,9 +202,7 @@ class CurlRequest
     }
 
     /**
-     *
-     * @param mixed $option
-     * @throws \RuntimeException
+     * @throws \RuntimeException always; libcurl offers no way to unset an option.
      */
     public function __unset($option)
     {
@@ -202,9 +211,11 @@ class CurlRequest
     }
 
     /**
+     * Answers from the local mirror, so an option libcurl holds but this object
+     * never set counts as absent. An absent option emits an "Undefined array key"
+     * warning and returns null.
      *
-     * @param mixed $option
-     * @return mixed
+     * @throws \InvalidArgumentException when no cURL option matches $option.
      */
     public function getOption($option)
     {
@@ -213,10 +224,10 @@ class CurlRequest
     }
 
     /**
+     * Resolves a cURL option to its integer value, accepting an int, a full
+     * constant name, or a bare suffix such as `RETURNTRANSFER`.
      *
-     * @param mixed $option
-     * @throws \InvalidArgumentException
-     * @return mixed
+     * @throws \InvalidArgumentException when no cURL constant matches.
      */
     protected function magicOption($option)
     {
@@ -248,11 +259,10 @@ class CurlRequest
     }
 
     /**
+     * Unlike the magic setters, this wants the `CURLOPT_*` constant itself; an
+     * option name is not resolved here.
      *
-     * @param mixed $option
-     * @param mixed $value
-     * @throws CurlException
-     * @return self
+     * @throws CurlException when libcurl rejects the option or its value.
      * @see http://php.net/curl_setopt
      */
     public function setOption($option, $value): self
@@ -266,9 +276,12 @@ class CurlRequest
     }
 
     /**
+     * Options are applied one at a time so that a failure names the offending
+     * option, which does mean a failure part-way leaves the earlier ones set.
      *
      * @param array $options
-     * @return self
+     *            Keyed by `CURLOPT_*` constant.
+     * @throws CurlException when libcurl rejects an option or its value.
      */
     public function setOptions(array $options): self
     {
@@ -281,9 +294,11 @@ class CurlRequest
     }
 
     /**
+     * Options from an earlier request are still in force, so a `get()` after a
+     * `post()` on the same object still sends POST; call {@see CurlRequest::reset()}
+     * in between.
      *
-     * @param string $url
-     * @return \tagadvance\stooge\CurlResponse
+     * @throws CurlException when the request fails.
      */
     public function get(string $url): CurlResponse
     {
@@ -291,9 +306,11 @@ class CurlRequest
     }
 
     /**
-     *
      * @param mixed $fields
-     * @return CurlResponse
+     *            An array, which is sent as `multipart/form-data`, or a
+     *            `key=value&...` string, which is sent as
+     *            `application/x-www-form-urlencoded`.
+     * @throws CurlException when the request fails.
      */
     public function post($url, $fields): CurlResponse
     {
@@ -306,9 +323,11 @@ class CurlRequest
     }
 
     /**
-     *
      * @param mixed $fields
-     * @return CurlResponse
+     *            An array, which is sent as `multipart/form-data`, or a
+     *            `key=value&...` string, which is sent as
+     *            `application/x-www-form-urlencoded`.
+     * @throws CurlException when the request fails.
      */
     public function put($url, $fields): CurlResponse
     {
@@ -321,9 +340,11 @@ class CurlRequest
     }
 
     /**
-     *
      * @param mixed $fields
-     * @return CurlResponse
+     *            An array, which is sent as `multipart/form-data`, or a
+     *            `key=value&...` string, which is sent as
+     *            `application/x-www-form-urlencoded`.
+     * @throws CurlException when the request fails.
      */
     public function patch($url, $fields): CurlResponse
     {
@@ -336,9 +357,11 @@ class CurlRequest
     }
 
     /**
-     *
      * @param mixed $fields
-     * @return CurlResponse
+     *            An array, which is sent as `multipart/form-data`, or a
+     *            `key=value&...` string, which is sent as
+     *            `application/x-www-form-urlencoded`.
+     * @throws CurlException when the request fails.
      */
     public function delete($url, $fields): CurlResponse
     {
@@ -351,6 +374,8 @@ class CurlRequest
     }
 
     /**
+     * Alias for {@see CurlRequest::execute()}, so a prepared request can be passed
+     * around as a callable.
      *
      * @return \tagadvance\stooge\CurlResponse
      */
@@ -360,10 +385,13 @@ class CurlRequest
     }
 
     /**
-     * TODO: add proxy support
-     * http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request
+     * Runs the request, capturing the headers of every hop along the way.
+     * `CURLOPT_RETURNTRANSFER` is not forced, so unless the caller set it libcurl
+     * writes the body to output and the response body is the string "1".
      *
-     * @return CurlResponse
+     * @throws CurlException when the request fails.
+     * @todo add proxy support
+     * @see http://stackoverflow.com/questions/9183178/php-curl-retrieving-response-headers-and-body-in-a-single-request
      */
     public function execute(): CurlResponse
     {
@@ -391,10 +419,12 @@ class CurlRequest
     }
 
     /**
-     * Return raw, unprocessed result.
+     * The unprocessed `curl_exec()` result, without the header capture and
+     * header/body split {@see CurlRequest::execute()} performs. Returns the body
+     * when `CURLOPT_RETURNTRANSFER` is set, and otherwise `true`, having written
+     * the body to output.
      *
-     * @throws CurlException
-     * @return mixed
+     * @throws CurlException when libcurl reports an error.
      */
     public function rawExec()
     {
@@ -408,8 +438,9 @@ class CurlRequest
     }
 
     /**
+     * Restores libcurl's defaults. The local option mirror is not cleared, so
+     * `getOption()` keeps answering with pre-reset values.
      *
-     * @return self
      * @see http://php.net/manual/en/function.curl-reset.php
      */
     public function reset(): self
@@ -419,8 +450,9 @@ class CurlRequest
     }
 
     /**
+     * Since PHP 8.0 the handle is an object released on garbage collection, so
+     * this has no lasting effect and the request stays usable afterwards.
      *
-     * @return self
      * @see http://php.net/manual/en/function.curl-close.php
      */
     public function close(): self
@@ -430,8 +462,11 @@ class CurlRequest
     }
 
     /**
+     * Called with no argument this returns the whole information array rather
+     * than a single value.
      *
-     * @param integer $option
+     * @param ?integer $option
+     *            A `CURLINFO_*` constant.
      * @see http://www.php.net/manual/en/function.curl-getinfo.php
      */
     public function getInformation($option = null)
@@ -440,8 +475,6 @@ class CurlRequest
     }
 
     /**
-     *
-     * @return array
      * @see http://www.php.net/manual/en/function.curl-version.php
      */
     public static function version(): array
