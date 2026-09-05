@@ -58,4 +58,12 @@ class CurlRequestTest extends TestCase
             $_SERVER = $server;
         }
     }
+
+    public function testGetOptionAcceptsACurlOptionConstant()
+    {
+        $request = new CurlRequest();
+        $request->setOption(CURLOPT_USERAGENT, 'Test/1.0');
+
+        $this->assertSame('Test/1.0', $request->getOption(CURLOPT_USERAGENT));
+    }
 }

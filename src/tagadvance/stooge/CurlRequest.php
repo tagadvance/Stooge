@@ -220,6 +220,11 @@ class CurlRequest
      */
     protected function magicOption($option)
     {
+        // setOption() is called with a CURLOPT_* value, so options are keyed by int
+        if (is_int($option)) {
+            return $option;
+        }
+
         if (defined($option)) {
             return constant($option);
         }
