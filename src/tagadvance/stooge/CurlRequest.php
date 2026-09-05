@@ -66,18 +66,41 @@ class CurlRequest
     }
 
     /**
-     * Forwards the inbound `$_SERVER['HTTP_USER_AGENT']` on this outbound request,
-     * falling back to `USER_AGENT_CHROME` when there is none. That inbound header
-     * is attacker controlled and is copied verbatim, with no header-injection
-     * guard and no length cap.
+     * The longest inbound User-Agent that will be forwarded. Real ones are well under
+     * 300 bytes; anything longer is not a browser.
+     */
+    public const MAX_USER_AGENT_LENGTH = 1024;
+
+    /**
+     * Forwards the inbound `$_SERVER['HTTP_USER_AGENT']` on this outbound request, falling
+     * back to `USER_AGENT_CHROME` when there is none or when it is not safe to forward.
+     *
+     * The inbound header is attacker controlled, and libcurl copies a CR or LF in it
+     * straight onto the wire, which appends headers of the attacker's choosing to every
+     * request this object makes.
      *
      * @throws CurlException when the option could not be set.
      */
     public function autoDetectUserAgent(): self
     {
-        $agent = $_SERVER['HTTP_USER_AGENT'] ?? USER_AGENT_CHROME;
+        $agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        if (! is_string($agent) || ! self::isForwardableUserAgent($agent)) {
+            $agent = USER_AGENT_CHROME;
+        }
+
         $this->setOption(CURLOPT_USERAGENT, $agent);
         return $this;
+    }
+
+    /**
+     * Rejects control characters, which is where header injection lives, and anything
+     * longer than MAX_USER_AGENT_LENGTH.
+     */
+    private static function isForwardableUserAgent(string $agent): bool
+    {
+        return $agent !== ''
+            && strlen($agent) <= self::MAX_USER_AGENT_LENGTH
+            && preg_match('/[\x00-\x1F\x7F]/', $agent) !== 1;
     }
 
     /**

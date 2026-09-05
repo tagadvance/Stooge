@@ -2,6 +2,7 @@
 
 namespace tagadvance\stooge;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CurlRequestTest extends TestCase
@@ -39,6 +40,50 @@ class CurlRequestTest extends TestCase
             $request->autoDetectUserAgent();
 
             $this->assertSame('Test/1.0', $request->getOption('USERAGENT'));
+        } finally {
+            $_SERVER = $server;
+        }
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function unforwardableUserAgentProvider(): array
+    {
+        return [
+            'carriage return and line feed' => ["Mozilla/5.0\r\nX-Injected: yes"],
+            'line feed alone' => ["Mozilla/5.0\nX-Injected: yes"],
+            'carriage return alone' => ["Mozilla/5.0\rX-Injected: yes"],
+            'null byte' => ["Mozilla/5.0\0"],
+            'longer than the cap' => [str_repeat('A', 1025)],
+            'empty' => [''],
+        ];
+    }
+
+    #[DataProvider('unforwardableUserAgentProvider')]
+    public function testAutoDetectUserAgentRejectsAnUnforwardableInboundHeader(string $agent)
+    {
+        $server = $_SERVER;
+        $_SERVER['HTTP_USER_AGENT'] = $agent;
+        try {
+            $request = new CurlRequest();
+            $request->autoDetectUserAgent();
+
+            $this->assertSame(USER_AGENT_CHROME, $request->getOption('USERAGENT'));
+        } finally {
+            $_SERVER = $server;
+        }
+    }
+
+    public function testAutoDetectUserAgentForwardsAUserAgentAtTheCap()
+    {
+        $server = $_SERVER;
+        $_SERVER['HTTP_USER_AGENT'] = $agent = str_repeat('A', 1024);
+        try {
+            $request = new CurlRequest();
+            $request->autoDetectUserAgent();
+
+            $this->assertSame($agent, $request->getOption('USERAGENT'));
         } finally {
             $_SERVER = $server;
         }
