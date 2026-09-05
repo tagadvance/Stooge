@@ -88,4 +88,18 @@ class URLQueryTest extends TestCase
 
         $this->assertSame('?', $urlQuery->toString());
     }
+
+    public function testGetReturnsNullForAnAbsentParameter()
+    {
+        $query = new URLQuery([]);
+
+        set_error_handler(static function (int $errno, string $error): bool {
+            throw new \ErrorException($error, 0, $errno);
+        });
+        try {
+            $this->assertNull($query->absent);
+        } finally {
+            restore_error_handler();
+        }
+    }
 }

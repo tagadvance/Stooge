@@ -47,12 +47,11 @@ class URLQuery
     }
 
     /**
-     * Emits an "Undefined array key" warning and returns null when the parameter
-     * is absent; test with `isset()` first.
+     * An absent parameter reads as null.
      */
     public function __get(string $name)
     {
-        return $this->parameters[$name];
+        return $this->parameters[$name] ?? null;
     }
 
     public function __set(string $name, $value)

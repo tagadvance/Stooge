@@ -235,15 +235,14 @@ class CurlRequest
 
     /**
      * Answers from the local mirror, so an option libcurl holds but this object
-     * never set counts as absent. An absent option emits an "Undefined array key"
-     * warning and returns null.
+     * never set counts as absent, and reads as null.
      *
      * @throws \InvalidArgumentException when no cURL option matches $option.
      */
     public function getOption($option)
     {
         $magicOption = $this->magicOption($option);
-        return $this->options[$magicOption];
+        return $this->options[$magicOption] ?? null;
     }
 
     /**

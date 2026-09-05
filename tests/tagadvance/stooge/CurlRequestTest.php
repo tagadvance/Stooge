@@ -111,4 +111,18 @@ class CurlRequestTest extends TestCase
 
         $this->assertSame('Test/1.0', $request->getOption(CURLOPT_USERAGENT));
     }
+
+    public function testGetOptionReturnsNullForAnOptionNeverSet()
+    {
+        $request = new CurlRequest();
+
+        set_error_handler(static function (int $errno, string $error): bool {
+            throw new \ErrorException($error, 0, $errno);
+        });
+        try {
+            $this->assertNull($request->getOption(CURLOPT_RETURNTRANSFER));
+        } finally {
+            restore_error_handler();
+        }
+    }
 }
