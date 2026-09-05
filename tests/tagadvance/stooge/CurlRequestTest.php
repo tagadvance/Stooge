@@ -28,4 +28,34 @@ class CurlRequestTest extends TestCase
 
         $this->assertArrayHasKey('version', $version);
     }
+
+    public function testAutoDetectUserAgentForwardsTheInboundUserAgent()
+    {
+        $server = $_SERVER;
+        $_SERVER['HTTP_USER_AGENT'] = 'Test/1.0';
+        $_SERVER['HTTP_REFERER'] = 'http://example.com/';
+        try {
+            $request = new CurlRequest();
+            $request->autoDetectUserAgent();
+
+            $this->assertSame('Test/1.0', $request->getOption('USERAGENT'));
+        } finally {
+            $_SERVER = $server;
+        }
+    }
+
+    public function testAutoDetectUserAgentFallsBackToChrome()
+    {
+        $server = $_SERVER;
+        unset($_SERVER['HTTP_USER_AGENT']);
+        $_SERVER['HTTP_REFERER'] = 'http://example.com/';
+        try {
+            $request = new CurlRequest();
+            $request->autoDetectUserAgent();
+
+            $this->assertSame(USER_AGENT_CHROME, $request->getOption('USERAGENT'));
+        } finally {
+            $_SERVER = $server;
+        }
+    }
 }

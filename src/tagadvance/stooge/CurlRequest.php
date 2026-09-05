@@ -67,7 +67,7 @@ class CurlRequest
      */
     public function autoDetectUserAgent(): self
     {
-        $agent = $_SERVER['HTTP_REFERER'] ?? USER_AGENT_CHROME;
+        $agent = $_SERVER['HTTP_USER_AGENT'] ?? USER_AGENT_CHROME;
         $this->setOption(CURLOPT_USERAGENT, $agent);
         return $this;
     }
