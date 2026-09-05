@@ -8,13 +8,9 @@ class CurlExceptionTest extends TestCase
 {
     public function testGetErrorMessage()
     {
-        $message = 'foo';
-        $code = 0;
-        $e = new CurlException($message, $code);
-        $errorMessage = $e->getErrorMessage();
+        $e = new CurlException('foo', CURLE_UNSUPPORTED_PROTOCOL);
 
-        $condition = is_string($errorMessage);
-        $this->assertTrue($condition);
+        $this->assertSame(curl_strerror(CURLE_UNSUPPORTED_PROTOCOL), $e->getErrorMessage());
     }
 
     public function testCodeIsOptional()
