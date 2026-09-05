@@ -125,4 +125,18 @@ class CurlRequestTest extends TestCase
             restore_error_handler();
         }
     }
+
+    public function testExecuteReturnsTheBodyWithoutTheCallerSettingReturntransfer()
+    {
+        $path = tempnam(sys_get_temp_dir(), 'stooge');
+        file_put_contents($path, $expected = 'hello from a file');
+        try {
+            $request = new CurlRequest();
+            $response = $request->get("file://$path");
+
+            $this->assertSame($expected, $response->getBody());
+        } finally {
+            unlink($path);
+        }
+    }
 }

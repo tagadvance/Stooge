@@ -408,8 +408,10 @@ class CurlRequest
 
     /**
      * Runs the request, capturing the headers of every hop along the way.
-     * `CURLOPT_RETURNTRANSFER` is not forced, so unless the caller set it libcurl
-     * writes the body to output and the response body is the string "1".
+     *
+     * `CURLOPT_RETURNTRANSFER` is forced on, overriding the caller: this method promises a
+     * CurlResponse carrying the body, and without it libcurl writes the body to output and
+     * hands back `true`, which becomes the body string "1". Use rawExec() to stream instead.
      *
      * @throws CurlException when the request fails.
      * @todo add proxy support
@@ -417,6 +419,8 @@ class CurlRequest
      */
     public function execute(): CurlResponse
     {
+        $this->setOption(CURLOPT_RETURNTRANSFER, true);
+
         $callback = $this->HEADERFUNCTION ?? function ($curlResource, $headerData) {
             return strlen($headerData);
         };
