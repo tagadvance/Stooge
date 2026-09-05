@@ -69,7 +69,7 @@ class CurlRequest
      * The longest inbound User-Agent that will be forwarded. Real ones are well under
      * 300 bytes; anything longer is not a browser.
      */
-    public const MAX_USER_AGENT_LENGTH = 1024;
+    private const MAX_USER_AGENT_LENGTH = 1024;
 
     /**
      * Forwards the inbound `$_SERVER['HTTP_USER_AGENT']` on this outbound request, falling
