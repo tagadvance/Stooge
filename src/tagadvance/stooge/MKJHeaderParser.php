@@ -35,8 +35,9 @@ class MKJHeaderParser implements HeaderParser
             if ($i === 0) {
                 $headers[] = $line;
             } else {
-                list($key, $value) = explode(': ', $line);
-                $headers[$key] = $value;
+                // split on the first colon only; a value may contain more
+                list($key, $value) = array_pad(explode(':', $line, 2), 2, '');
+                $headers[trim($key)] = trim($value);
             }
         }
 
